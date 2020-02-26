@@ -21,8 +21,8 @@ repositories {
 ```
 3. Add the dependency under ```dependencies```
 ```
-implementation 'com.rudderstack.android.sdk:core:1.0'
-implementation 'com.rudderstack.android.integration:leanplum:0.1.0'
+implementation 'com.rudderstack.android.sdk:core:1.0.1-beta01'
+implementation 'com.rudderstack.android.integration:leanplum:0.1.0-beta01'
 ```
 
 ## Initialize ```RudderClient```
