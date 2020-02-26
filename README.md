@@ -21,8 +21,15 @@ repositories {
 ```
 3. Add the dependency under ```dependencies```
 ```
+// Rudder core sdk and leanplum extension
 implementation 'com.rudderstack.android.sdk:core:1.0.1-beta01'
 implementation 'com.rudderstack.android.integration:leanplum:0.1.0-beta01'
+
+// leanplum core sdk
+implementation 'com.leanplum:leanplum-core:5.3.3'
+
+// gson
+implementation 'com.google.code.gson:gson:2.8.6'
 ```
 
 ## Initialize ```RudderClient```
