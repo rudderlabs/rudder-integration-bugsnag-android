@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.2) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.2/link)
+[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta01) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta01/link)
 
 # What is Rudder?
 
@@ -11,7 +11,7 @@ Rudder is a platform for collecting, storing and routing customer event data to 
 Released under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## Getting Started with LeanPlum Integration of Android SDK
-1. Add [LeanPlum](https://www.leanplum.com) as a destination in the [Dashboard](https://app.rudderlabs.com/) and define ```apiToken``` and ```eventMapping```
+1. Add [LeanPlum](https://www.leanplum.com) as a destination in the [Dashboard](https://app.rudderlabs.com/) and define `applicationId`, and `clientKey`. If you turn on the Development Environment flag, make sure to put your development key in `clientKey`. We suggest to create two different destinations for Production and Development. If you want to send events only through the `device-mode`, turn on the `Use native SDK to send user generated events` flag.
 
 2. Add these lines to your ```app/build.gradle```
 ```
