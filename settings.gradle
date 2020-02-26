@@ -1,1 +1,1 @@
-include ':sample-kotlin', ':appsflyer'
+include ':sample-kotlin', ':leanplum'

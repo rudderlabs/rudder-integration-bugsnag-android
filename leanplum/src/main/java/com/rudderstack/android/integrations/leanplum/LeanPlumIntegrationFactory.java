@@ -1,18 +1,19 @@
 package com.rudderstack.android.integrations.leanplum;
 
+import com.leanplum.Leanplum;
+import com.leanplum.LeanplumActivityHelper;
 import com.rudderstack.android.sdk.core.MessageType;
 import com.rudderstack.android.sdk.core.RudderClient;
 import com.rudderstack.android.sdk.core.RudderConfig;
+import com.rudderstack.android.sdk.core.RudderContext;
 import com.rudderstack.android.sdk.core.RudderIntegration;
 import com.rudderstack.android.sdk.core.RudderLogger;
 import com.rudderstack.android.sdk.core.RudderMessage;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
-    private static final String LEANPLUM_KEY = "LeanPlum";
-    private RudderClient rudderClient;
+    private static final String LEANPLUM_KEY = "Leanplum";
 
     public static RudderIntegration.Factory FACTORY = new Factory() {
         @Override
@@ -27,38 +28,59 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
     };
 
     private LeanPlumIntegrationFactory(Object config, RudderClient client, RudderConfig rudderConfig) {
-        this.rudderClient = client;
-        Map<String, Object> destConfig = (Map<String, Object>) config;
+        Leanplum.setApplicationContext(client.getApplication());
+        if (client.getApplication() != null) {
+            LeanplumActivityHelper.enableLifecycleCallbacks(client.getApplication());
+        }
 
+        Map<String, Object> configMap = (Map<String, Object>) config;
+        if (configMap != null) {
+            Boolean isDevelop = (Boolean) configMap.get("isDevelop");
+            String appId = (String) configMap.get("applicationId");
+            String clientKey = (String) configMap.get("clientKey");
+            if (isDevelop != null && appId != null && clientKey != null) {
+                if (isDevelop) {
+                    Leanplum.setAppIdForDevelopmentMode(appId, clientKey);
+                } else {
+                    Leanplum.setAppIdForProductionMode(appId, clientKey);
+                }
+            }
+            if (rudderConfig.getLogLevel() >= RudderLogger.RudderLogLevel.DEBUG) {
+                Leanplum.enableVerboseLoggingInDevelopmentMode();
+            }
+
+            RudderContext context = client.getRudderContext();
+            String userId = null;
+            if (context != null && context.getTraits() != null) {
+                Map<String, Object> traits = context.getTraits();
+                if (traits.containsKey("userId")) {
+                    userId = (String) traits.get("userId");
+                } else if (traits.containsKey("id")) {
+                    userId = (String) traits.get("id");
+                }
+            }
+            if (userId != null) {
+                Leanplum.start(client.getApplication(), userId);
+            } else {
+                Leanplum.start(client.getApplication());
+            }
+        }
     }
 
     private void processEvents(RudderMessage message) {
         String eventType = message.getType();
-        String afEventName;
-        Map<String, Object> afEventProps = new HashMap<>();
         if (eventType != null) {
             switch (eventType) {
                 case MessageType.TRACK:
+                case MessageType.SCREEN:
                     String eventName = message.getEventName();
                     if (eventName != null) {
-                        Map<String, Object> property = message.getProperties();
-                        if (property != null) {
-                            switch (eventName) {
-                                default:
-                                    afEventName = eventName.toLowerCase().replace(" ", "_");
-                            }
-                        } else {
-                            afEventName = eventName.toLowerCase().replace(" ", "_");
-                        }
-
+                        Leanplum.track(eventName, message.getProperties());
                     }
                     break;
-                case MessageType.SCREEN:
-
-                    break;
                 case MessageType.IDENTIFY:
-                    String userId = message.getUserId();
-
+                    Leanplum.setUserId(message.getUserId());
+                    Leanplum.setUserAttributes(message.getTraits());
                     break;
                 default:
                     RudderLogger.logWarn("Message type is not supported");
@@ -68,7 +90,7 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
 
     @Override
     public void reset() {
-
+        Leanplum.clearUserContent();
     }
 
     @Override

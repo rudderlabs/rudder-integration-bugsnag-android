@@ -21,7 +21,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0-beta01"
     }
 
     buildTypes {
@@ -40,12 +40,10 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // rudder core sdk
-//    compileOnly 'com.rudderstack.android.sdk:core:1.0'
-    compileOnly project(':core')
+    compileOnly 'com.rudderstack.android.sdk:core:1.0.1-beta01'
 
-    // appsflyer dependencies
-    implementation 'com.appsflyer:af-android-sdk:5.1.1'
-    implementation 'com.android.installreferrer:installreferrer:1.1.1'
+    // leanplum dependencies
+    implementation 'com.leanplum:leanplum-core:5.3.3'
 }
 
 apply from: './maven.gradle'

@@ -1,17 +1,17 @@
 ext {
     bintrayRepo = 'rudderstack'
-    bintrayName = 'appsflyer'
+    bintrayName = 'leanplum'
 
     publishedGroupId = 'com.rudderstack.android.integration'
     libraryName = 'RudderAndroidSdkCore'
-    artifact = 'appsflyer'
+    artifact = 'leanplum'
 
     libraryDescription = 'Android  SDK for Rudderlabs. Steer your customer data'
 
     siteUrl = 'https://github.com/rudderlabs/rudder-sdk-android'
-    gitUrl = 'https://github.com/rudderlabs/rudder-integration-appsflyer-android.git'
+    gitUrl = 'https://github.com/rudderlabs/rudder-integration-leanplum-android.git'
 
-    libraryVersion = '0.1.2.beta-01'
+    libraryVersion = '0.1.0-beta01'
 
     developerId = 'arnabp92'
     developerName = 'Arnab Pal'
