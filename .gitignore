@@ -6,4 +6,5 @@
 rudder-sdk-core/
 local.properties
 .project
-/.settings
+**/.settings
+**/.classpath
