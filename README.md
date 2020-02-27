@@ -1,4 +1,4 @@
-# PENDING PUBLICATION
+# WORK IN PROGRESS
 
 [ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta01) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta01/link)
 
