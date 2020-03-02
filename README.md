@@ -1,6 +1,4 @@
-# WORK IN PROGRESS
-
-[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta01) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta01/link)
+[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta.2) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta.2/link)
 
 # What is Rudder?
 
@@ -24,8 +22,8 @@ repositories {
 3. Add the dependency under ```dependencies```
 ```
 // Rudder core sdk and leanplum extension
-implementation 'com.rudderstack.android.sdk:core:1.0.1-beta01'
-implementation 'com.rudderstack.android.integration:leanplum:0.1.0-beta01'
+implementation 'com.rudderstack.android.sdk:core:1.0.1-beta.1'
+implementation 'com.rudderstack.android.integration:leanplum:0.1.0-beta.2'
 
 // leanplum core sdk
 implementation 'com.leanplum:leanplum-core:5.3.3'
@@ -38,10 +36,9 @@ implementation 'com.google.code.gson:gson:2.8.6'
 ```
 val rudderClient: RudderClient = RudderClient.getInstance(
     this,
-    WRITE_KEY,
+    <WRITE_KEY>,
     RudderConfig.Builder()
-        .withEndPointUri(END_POINT_URI)
-        .withLogLevel(RudderLogger.RudderLogLevel.DEBUG)
+        .withEndPointUri(<END_POINT_URI>)
         .withFactory(LeanPlumIntegrationFactory.FACTORY)
         .build()
 )
@@ -50,6 +47,5 @@ val rudderClient: RudderClient = RudderClient.getInstance(
 ## Send Events
 Follow the steps from [Rudder Android SDK](https://github.com/rudderlabs/rudder-sdk-android)
 
-# Coming Soon
-1. More documentation
-2. More destination support
+## Contact Us
+If you come across any issues while configuring or using RudderStack, please feel free to [contact us](https://rudderstack.com/contact/) or start a conversation on our [Discord](https://discordapp.com/invite/xNEdEGw) channel. We will be happy to help you.
