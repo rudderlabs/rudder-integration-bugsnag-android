@@ -1,9 +1,9 @@
-[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta.2) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta.2/link)
+[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta.3) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta.3/link)
 
 # What is Rudder?
 
 **Short answer:** 
-Rudder is an open-source Segment alternative written in Go, built for the enterprise. .
+Rudder is an open-source Segment alternative written in Go, built for the enterprise.
 
 **Long answer:** 
 Rudder is a platform for collecting, storing and routing customer event data to dozens of tools. Rudder is open-source, can run in your cloud environment (AWS, GCP, Azure or even your data-centre) and provides a powerful transformation framework to process your event data on the fly.
@@ -23,7 +23,7 @@ repositories {
 ```
 // Rudder core sdk and leanplum extension
 implementation 'com.rudderstack.android.sdk:core:1.0.1-beta.1'
-implementation 'com.rudderstack.android.integration:leanplum:0.1.0-beta.2'
+implementation 'com.rudderstack.android.integration:leanplum:0.1.0-beta.3'
 
 // leanplum core sdk
 implementation 'com.leanplum:leanplum-core:5.3.3'
