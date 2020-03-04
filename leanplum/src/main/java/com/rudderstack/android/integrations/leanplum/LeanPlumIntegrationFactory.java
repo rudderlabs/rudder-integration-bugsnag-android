@@ -1,5 +1,8 @@
 package com.rudderstack.android.integrations.leanplum;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.leanplum.Leanplum;
 import com.leanplum.LeanplumActivityHelper;
 import com.rudderstack.android.sdk.core.MessageType;
@@ -27,7 +30,7 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
         }
     };
 
-    private LeanPlumIntegrationFactory(Object config, RudderClient client, RudderConfig rudderConfig) {
+    private LeanPlumIntegrationFactory(@Nullable Object config, @NonNull RudderClient client, @NonNull RudderConfig rudderConfig) {
         Leanplum.setApplicationContext(client.getApplication());
         if (client.getApplication() != null) {
             LeanplumActivityHelper.enableLifecycleCallbacks(client.getApplication());
@@ -67,15 +70,32 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
         }
     }
 
-    private void processEvents(RudderMessage message) {
+    private void processEvents(@NonNull RudderMessage message) {
         String eventType = message.getType();
         if (eventType != null) {
             switch (eventType) {
                 case MessageType.TRACK:
-                case MessageType.SCREEN:
                     String eventName = message.getEventName();
                     if (eventName != null) {
-                        Leanplum.track(eventName, message.getProperties());
+                        Map<String, Object> properties = message.getProperties();
+                        if (properties != null && properties.containsKey("value")) {
+                            Object value = properties.get("value");
+                            if (value instanceof Double) {
+                                Double val = (Double) value;
+                                if (val != 0.0D) {
+                                    Leanplum.track(eventName, (Double) value, properties);
+                                } else {
+                                    Leanplum.track(eventName, properties);
+                                }
+                            }
+                        } else {
+                            Leanplum.track(eventName, properties);
+                        }
+                    }
+                    break;
+                case MessageType.SCREEN:
+                    if (message.getEventName() != null) {
+                        Leanplum.advanceTo(message.getEventName(), message.getProperties());
                     }
                     break;
                 case MessageType.IDENTIFY:
@@ -95,8 +115,12 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
 
     @Override
     public void dump(RudderMessage element) {
-        if (element != null) {
-            this.processEvents(element);
+        try {
+            if (element != null) {
+                this.processEvents(element);
+            }
+        } catch (Exception e) {
+            RudderLogger.logError(e);
         }
     }
 }
