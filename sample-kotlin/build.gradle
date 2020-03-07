@@ -16,7 +16,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.rudderstack.sample.braze"
+        applicationId "com.rudderstack.sample.leanplum.android"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1

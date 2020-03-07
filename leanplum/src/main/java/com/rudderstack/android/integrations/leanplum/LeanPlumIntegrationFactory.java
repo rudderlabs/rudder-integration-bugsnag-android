@@ -3,6 +3,7 @@ package com.rudderstack.android.integrations.leanplum;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
 import com.leanplum.Leanplum;
 import com.leanplum.LeanplumActivityHelper;
 import com.rudderstack.android.sdk.core.MessageType;
@@ -13,6 +14,7 @@ import com.rudderstack.android.sdk.core.RudderIntegration;
 import com.rudderstack.android.sdk.core.RudderLogger;
 import com.rudderstack.android.sdk.core.RudderMessage;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
@@ -78,6 +80,7 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
                     String eventName = message.getEventName();
                     if (eventName != null) {
                         Map<String, Object> properties = message.getProperties();
+                        properties = filterProperties(properties);
                         if (properties != null && properties.containsKey("value")) {
                             Object value = properties.get("value");
                             if (value instanceof Double) {
@@ -106,6 +109,24 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
                     RudderLogger.logWarn("Message type is not supported");
             }
         }
+    }
+
+    private Map<String, Object> filterProperties(Map<String, Object> properties) {
+        if (properties != null) {
+            Map<String, Object> filteredProperties = new HashMap<>();
+            for (String key : properties.keySet()) {
+                Object val = properties.get(key);
+                if (val instanceof String ||
+                        val instanceof Number ||
+                        val instanceof Boolean) {
+                    filteredProperties.put(key, val);
+                } else {
+                    filteredProperties.put(key, new Gson().toJson(val));
+                }
+            }
+            return filteredProperties;
+        }
+        return null;
     }
 
     @Override
