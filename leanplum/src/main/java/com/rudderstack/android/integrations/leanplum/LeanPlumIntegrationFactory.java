@@ -3,7 +3,6 @@ package com.rudderstack.android.integrations.leanplum;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.leanplum.Leanplum;
 import com.leanplum.LeanplumActivityHelper;
 import com.rudderstack.android.sdk.core.MessageType;
@@ -120,8 +119,6 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
                         val instanceof Number ||
                         val instanceof Boolean) {
                     filteredProperties.put(key, val);
-                } else {
-                    filteredProperties.put(key, new Gson().toJson(val));
                 }
             }
             return filteredProperties;
