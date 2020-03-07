@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta.3) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta.3/link)
+[ ![Download](https://api.bintray.com/packages/rudderstack/rudderstack/leanplum/images/download.svg?version=0.1.0-beta.5) ](https://bintray.com/rudderstack/rudderstack/leanplum/0.1.0-beta.5/link)
 
 # What is Rudder?
 
