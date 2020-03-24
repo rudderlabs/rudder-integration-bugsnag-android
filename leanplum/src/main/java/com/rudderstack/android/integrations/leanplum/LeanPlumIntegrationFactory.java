@@ -1,5 +1,7 @@
 package com.rudderstack.android.integrations.leanplum;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -18,6 +20,7 @@ import java.util.Map;
 
 public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
     private static final String LEANPLUM_KEY = "Leanplum";
+    private boolean sendEvents = false;
 
     public static RudderIntegration.Factory FACTORY = new Factory() {
         @Override
@@ -42,6 +45,9 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
             Boolean isDevelop = (Boolean) configMap.get("isDevelop");
             String appId = (String) configMap.get("applicationId");
             String clientKey = (String) configMap.get("clientKey");
+            Boolean sendEventsBool = (Boolean) configMap.get("useNativeSDKToSend");
+            this.sendEvents = sendEventsBool != null && sendEventsBool;
+
             if (isDevelop != null && appId != null && clientKey != null) {
                 if (isDevelop) {
                     Leanplum.setAppIdForDevelopmentMode(appId, clientKey);
@@ -134,7 +140,7 @@ public class LeanPlumIntegrationFactory extends RudderIntegration<Void> {
     @Override
     public void dump(RudderMessage element) {
         try {
-            if (element != null) {
+            if (this.sendEvents && element != null) {
                 this.processEvents(element);
             }
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package com.rudderlabs.android.sample.kotlin
+package com.rudderstack.android.sample.kotlin
 
 import android.app.Application
 import com.rudderstack.android.integrations.leanplum.LeanPlumIntegrationFactory
@@ -9,8 +9,8 @@ import com.rudderstack.android.sdk.core.RudderLogger
 class MainApplication : Application() {
     companion object {
         private const val WRITE_KEY = "1XTOWiGgGaI4ImxlZAfF7TquLw7"
-        private const val END_POINT_URI = "https://fee75804.ngrok.io"
-        private const val CONFIG_PLANE_URL = "https://api.dev.rudderlabs.com"
+        private const val DATA_PLANE_URL = "https://edbe3859.ngrok.io"
+        private const val CONTROL_PLANE_URL = "https://edbe3859.ngrok.io"
         lateinit var rudderClient: RudderClient
     }
 
@@ -20,8 +20,8 @@ class MainApplication : Application() {
             this,
             WRITE_KEY,
             RudderConfig.Builder()
-                .withEndPointUri(END_POINT_URI)
-                .withConfigPlaneUrl(CONFIG_PLANE_URL)
+                .withDataPlaneUrl(DATA_PLANE_URL)
+                .withControlPlaneUrl(CONTROL_PLANE_URL)
                 .withFactory(LeanPlumIntegrationFactory.FACTORY)
                 .withLogLevel(RudderLogger.RudderLogLevel.VERBOSE)
                 .build()
