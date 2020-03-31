@@ -42,8 +42,8 @@ dependencies {
     // rudder core sdk
     compileOnly 'com.rudderstack.android.sdk:core:1.0.1-beta.2'
 
-    // leanplum dependencies
-    implementation 'com.leanplum:leanplum-core:5.3.3'
+    // bugsnag dependencies
+    implementation 'com.bugsnag:bugsnag-android:4.+'
 }
 
 apply from: './maven.gradle'

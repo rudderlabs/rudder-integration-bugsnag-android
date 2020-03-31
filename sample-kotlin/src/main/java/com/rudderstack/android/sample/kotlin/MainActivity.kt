@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
             RudderTraits()
                 .putEmail("example@gmail.com")
                 .putFirstName("Foo")
-                .putLastName("Bar"),
+                .putLastName("Bar")
+                .putName("Ruchira"),
             null
         )
         MainApplication.rudderClient.track("account: created")

@@ -1,1 +1,1 @@
-include ':sample-kotlin', ':leanplum'
+include ':sample-kotlin', ':bugsnag'
