@@ -48,7 +48,7 @@ public class BugSnagIntegrationFactory extends RudderIntegration<Void> {
 
         if (configMap != null) {
           // bugSnagClient = new Client(client.getApplication(),(String) configMap.get("apiKey"));
-        //    bugSnagClient = new Client(client.getApplication(),"0d238ef3b270109195e9b03d26d0b31c");
+           bugSnagClient = new Client(client.getApplication(),"0d238ef3b270109195e9b03d26d0b31c");
             Bugsnag.init(client.getApplication(),"0d238ef3b270109195e9b03d26d0b31c");
 
 
