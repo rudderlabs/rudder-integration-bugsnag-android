@@ -82,7 +82,7 @@ public class BugSnagIntegrationFactory extends RudderIntegration<Client> {
                     bugSnagClient.setUser(
                             message.getUserId(),
                             (String) traits.get("email"),
-                            String.format(Locale.US, "%s %s", traits.get("firstName"), traits.get("lastName"))
+                            String.format(Locale.US, "%s %s", traits.get("firstname"), traits.get("lastname"))
                     );
                     for (Map.Entry<String, Object> entry : traits.entrySet()) {
                         bugSnagClient.addToTab("User", entry.getKey(), entry.getValue());
