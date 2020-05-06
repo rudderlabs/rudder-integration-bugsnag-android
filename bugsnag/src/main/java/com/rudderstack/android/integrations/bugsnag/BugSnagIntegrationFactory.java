@@ -64,16 +64,12 @@ public class BugSnagIntegrationFactory extends RudderIntegration<Client> {
                 case MessageType.TRACK:
                     if (message.getEventName() != null) {
                         bugSnagClient.leaveBreadcrumb(message.getEventName());
-                        bugSnagClient.notify(new RuntimeException(message.getEventName()));
                     }
                     break;
                 case MessageType.SCREEN:
                     if (message.getEventName() != null) {
                         bugSnagClient.leaveBreadcrumb(
                                 String.format("Viewed %s Screen", message.getEventName())
-                        );
-                        bugSnagClient.notify(
-                                new RuntimeException(String.format("Viewed %s Screen", message.getEventName()))
                         );
                     }
                     break;
@@ -87,7 +83,6 @@ public class BugSnagIntegrationFactory extends RudderIntegration<Client> {
                     for (Map.Entry<String, Object> entry : traits.entrySet()) {
                         bugSnagClient.addToTab("User", entry.getKey(), entry.getValue());
                     }
-                    Bugsnag.notify(new RuntimeException((String) traits.get("name")));
                     break;
                 default:
                     RudderLogger.logWarn("Message type is not supported");
