@@ -1,16 +1,5 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-    }
-}
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 29
@@ -31,15 +20,10 @@ android {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://dl.bintray.com/rudderstack/rudderstack" }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // rudder core sdk
-    compileOnly 'com.rudderstack.android.sdk:core:1.0.1'
+    compileOnly 'com.rudderstack.android.sdk:core:1.0.10'
 
     // bugsnag dependencies
     implementation 'com.bugsnag:bugsnag-android:4.22.3'
