@@ -12,12 +12,10 @@ import com.rudderstack.android.sdk.core.RudderIntegration;
 import com.rudderstack.android.sdk.core.RudderLogger;
 import com.rudderstack.android.sdk.core.RudderMessage;
 
-import java.util.Locale;
 import java.util.Map;
 
 public class BugSnagIntegrationFactory extends RudderIntegration<Client> {
     private static final String BUGSNAG_KEY = "Bugsnag";
-    private Client bugSnagClient;
 
     public static RudderIntegration.Factory FACTORY = new Factory() {
         @Override
@@ -36,14 +34,14 @@ public class BugSnagIntegrationFactory extends RudderIntegration<Client> {
 
         if (configMap != null && client.getApplication() != null) {
             String apiKey = (String) configMap.get("apiKey");
-            bugSnagClient = new Client(client.getApplication(), apiKey);
-            Bugsnag.init(client.getApplication(), apiKey);
+            Bugsnag.start(client.getApplication(), apiKey);
         }
     }
 
     @Override
     public void reset() {
-        bugSnagClient.clearBreadcrumbs();
+        Bugsnag.clearMetadata("User");
+        Bugsnag.clearFeatureFlags();
     }
 
     @Override
@@ -63,25 +61,23 @@ public class BugSnagIntegrationFactory extends RudderIntegration<Client> {
             switch (eventType) {
                 case MessageType.TRACK:
                     if (message.getEventName() != null) {
-                        bugSnagClient.leaveBreadcrumb(message.getEventName());
+                        Bugsnag.leaveBreadcrumb(message.getEventName());
                     }
                     break;
                 case MessageType.SCREEN:
                     if (message.getEventName() != null) {
-                        bugSnagClient.leaveBreadcrumb(
-                                String.format("Viewed %s Screen", message.getEventName())
-                        );
+                        Bugsnag.leaveBreadcrumb(String.format("Viewed %s Screen", message.getEventName()));
                     }
                     break;
                 case MessageType.IDENTIFY:
                     Map<String, Object> traits = message.getTraits();
-                    bugSnagClient.setUser(
-                            message.getUserId(),
-                            (String) traits.get("email"),
-                            String.format(Locale.US, "%s %s", traits.get("firstname"), traits.get("lastname"))
-                    );
-                    for (Map.Entry<String, Object> entry : traits.entrySet()) {
-                        bugSnagClient.addToTab("User", entry.getKey(), entry.getValue());
+                    if (traits != null) {
+                        String name = traits.containsKey("name") ? (String)traits.get("name") : null;
+                        String email = traits.containsKey("email") ? (String)traits.get("email") : null;
+                        Bugsnag.setUser(message.getUserId(), email, name);
+                        for (Map.Entry<String, Object> entry : traits.entrySet()) {
+                            Bugsnag.addMetadata("User", entry.getKey(), entry.getValue());
+                        }
                     }
                     break;
                 default:
@@ -92,6 +88,6 @@ public class BugSnagIntegrationFactory extends RudderIntegration<Client> {
 
     @Override
     public Client getUnderlyingInstance() {
-        return bugSnagClient;
+        return Bugsnag.getClient();
     }
 }
