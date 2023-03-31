@@ -24,11 +24,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // rudder core sdk
-    compileOnly 'com.rudderstack.android.sdk:core:1.0.10'
 
-    // bugsnag dependencies
-    implementation 'com.bugsnag:bugsnag-android:4.22.3'
+    // RudderStack SDK
+    compileOnly 'com.rudderstack.android.sdk:core:[1.12,2.0)'
+
+    // Bugsnag SDK
+    implementation 'com.bugsnag:bugsnag-android:[5.29,6.0)'
 }
 
 apply from: rootProject.file('gradle/mvn-publish.gradle')
