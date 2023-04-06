@@ -25,6 +25,7 @@ jobs:
           VERSION=${VERSION#release/}
           
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -32,8 +33,8 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v3
-          with:
-            node-version: 16
+        with:
+          node-version: 16
 
       # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
@@ -45,7 +46,6 @@ jobs:
       - name: Create Github Release & Tag
         id: create_release
         env:
-          HUSKY: 0
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
         run: |
