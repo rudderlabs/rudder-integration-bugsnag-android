@@ -39,10 +39,10 @@ jobs:
             ${{ runner.os }}-gradle-core-
 
       - name: Run Tests
-        run: ./gradlew moengage:test
+        run: ./gradlew bugsnag:test
 
       - name: Generate coverage report
-        run: ./gradlew moengage:codeCoverageReport
+        run: ./gradlew bugsnag:codeCoverageReport
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
