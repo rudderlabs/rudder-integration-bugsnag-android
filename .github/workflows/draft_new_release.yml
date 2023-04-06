@@ -29,8 +29,6 @@ jobs:
       # Calculate the next release version based on conventional semantic release
       - name: Create release branch
         id: create-release
-        env:
-          HUSKY: 0
         run: |
           source_branch_name=${GITHUB_REF##*/}
           release_type=release
@@ -65,15 +63,15 @@ jobs:
           npx standard-version -a --skip.tag
 
       - name: Push new version in release branch
-          run: |
-            git push
+        run: |
+          git push
 
       - name: Create pull request into master
-          uses: repo-sync/pull-request@v2
-          with:
-            source_branch: ${{ steps.create-release.outputs.branch_name }}
-            destination_branch: 'master'
-            github_token: ${{ secrets.PAT }}
-            pr_title: "chore(release): pulling ${{ steps.create-release.outputs.branch_name }} into master"
-            pr_body: ":crown: *An automated PR*"
-            pr_reviewer: 'itsdebs'
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: ${{ steps.create-release.outputs.branch_name }}
+          destination_branch: 'master'
+          github_token: ${{ secrets.PAT }}
+          pr_title: "chore(release): pulling ${{ steps.create-release.outputs.branch_name }} into master"
+          pr_body: ":crown: *An automated PR*"
+          pr_reviewer: 'itsdebs'
