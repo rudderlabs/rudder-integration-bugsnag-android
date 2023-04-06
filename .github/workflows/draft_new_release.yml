@@ -7,7 +7,7 @@ jobs:
   draft-new-release:
     name: Draft a new release
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/hotfix/') || startsWith(github.ref, 'refs/heads/fix/')
+    if: startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/')
     steps:
       - name: Checkout source branch
         uses: actions/checkout@v3
@@ -18,7 +18,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
 
       # In order to make a commit, we need to initialize a user.
       # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
@@ -30,6 +29,8 @@ jobs:
       # Calculate the next release version based on conventional semantic release
       - name: Create release branch
         id: create-release
+        env:
+          HUSKY: 0
         run: |
           source_branch_name=${GITHUB_REF##*/}
           release_type=release
@@ -39,7 +40,7 @@ jobs:
           current_version=$(cat gradle.properties | grep "VERSION_NAME" | cut -d'=' -f2)
           
           npm ci
-           npx standard-version --skip.commit --skip.tag --skip.changelog
+          npx standard-version --skip.commit --skip.tag --skip.changelog
           new_version=$(cat gradle.properties | grep "VERSION_NAME" | cut -d'=' -f2)
           git reset --hard
 
@@ -53,28 +54,26 @@ jobs:
           git checkout -b "$branch_name"
           git push --set-upstream origin "$branch_name"
           
-          echo "::set-output name=source_branch_name::$source_branch_name"
-          echo "::set-output name=branch_name::$branch_name"
-          echo "::set-output name=new_version::$new_version"
+          echo "source_branch_name=$source_branch_name" >> $GITHUB_OUTPUT
+          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
       - name: Update changelog & bump version
         id: finish-release
-        run: |
-          npm ci
-          npx standard-version
-          git add . && git commit --amend --no-edit
+          run: |
+            npm ci
+            npx standard-version -a --skip.tag
 
-      - name: Push new version in release branch & tag
-        
-        run: |
-          git push --follow-tags
+      - name: Push new version in release branch
+          run: |
+            git push
 
-      - name: Create pull request into main
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: ${{ steps.create-release.outputs.branch_name }}
-          destination_branch: 'master'
-          github_token: ${{ secrets.PAT }}
-          pr_title: "chore(release): pulling ${{ steps.create-release.outputs.branch_name }} into ${{ steps.create-release.outputs.main_branch }}"
-          pr_body:  ":crown: *An automated PR*"
-          pr_reviewer: 'itsdebs'
+      - name: Create pull request into master
+          uses: repo-sync/pull-request@v2
+          with:
+            source_branch: ${{ steps.create-release.outputs.branch_name }}
+            destination_branch: 'master'
+            github_token: ${{ secrets.PAT }}
+            pr_title: "chore(release): pulling ${{ steps.create-release.outputs.branch_name }} into master"
+            pr_body: ":crown: *An automated PR*"
+            pr_reviewer: 'itsdebs'
