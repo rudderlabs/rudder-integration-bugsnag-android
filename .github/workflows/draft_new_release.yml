@@ -60,9 +60,9 @@ jobs:
 
       - name: Update changelog & bump version
         id: finish-release
-          run: |
-            npm ci
-            npx standard-version -a --skip.tag
+        run: |
+          npm ci
+          npx standard-version -a --skip.tag
 
       - name: Push new version in release branch
           run: |
