@@ -1,0 +1,19 @@
+{
+  "name": "rudder-integration-bugsnag-android",
+  "version": "0.1.0-beta.1",
+  "description": "Rudderstack Native Android Integration For Bugsnag",
+  "dependencies": {
+    "properties-reader": "^2.2.0",
+    "mkdirp": "^1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudderlabs/rudder-integration-bugsnag-android.git"
+  },
+  "author": "itsdebs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rudderlabs/rudder-integration-bugsnag-android/issues"
+  },
+  "homepage": "https://github.com/rudderlabs/rudder-integration-bugsnag-android#readme"
+}
