@@ -17,31 +17,27 @@ jobs:
         with:
           workflow_id: ${{ github.event.workflow.id }}
 
-  rudder-integration-bugsnag-android-test:
+  -test:
     needs: cancel_previous
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source branch
-          uses: actions/checkout@v3
-
-            - name: Grant execute permission for gradlew
-              run: chmod +x gradlew
-
-            - name: cache gradle dependencies
-              uses: actions/cache@v3
-              with:
-                path: |
-                  ~/.gradle/caches
-                  ~/.gradle/wrapper
-                key: ${{ runner.os }}-gradle-core-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-                restore-keys: |
-                  ${{ runner.os }}-gradle-core-
-
+      - uses: actions/checkout@v3
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: cache gradle dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-core-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-core-
       - name: Run Tests
-        run: ./gradlew bugsnag:test
+        run: ./gradlew :test
       - name: Generate coverage report
-        run: ./gradlew bugsnag:codeCoverageReport
+        run: ./gradlew :codeCoverageReport
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
 
