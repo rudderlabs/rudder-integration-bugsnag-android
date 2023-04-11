@@ -64,7 +64,7 @@ jobs:
         id: finish-release
         run: |
           npm ci
-          npx standard-version -a --skip.tag --release-as $new_version
+          npx standard-version -a --skip.tag --release-as "$new_version"
 
       - name: Push new version in release branch
         run: |
