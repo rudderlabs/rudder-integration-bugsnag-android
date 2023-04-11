@@ -1,8 +1,11 @@
 name: Draft new release
 
 on:
-  workflow_dispatch
-
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Version(example: 1.0.0)"
+        required: false
 jobs:
   draft-new-release:
     name: Draft a new release
@@ -36,9 +39,10 @@ jobs:
           git fetch origin master --depth=1
           git merge origin/master
           current_version=$(cat gradle.properties | grep "VERSION_NAME" | cut -d'=' -f2)
+          release_version="${{ github.event.inputs.release_version }}"
           
           npm ci
-          npx standard-version --skip.commit --skip.tag --skip.changelog
+          npx standard-version --skip.commit --skip.tag --skip.changelog --release-as "$release_version"
           new_version=$(cat gradle.properties | grep "VERSION_NAME" | cut -d'=' -f2)
           git reset --hard
 
