@@ -1,6 +1,6 @@
 {
   "name": "rudder-integration-bugsnag-android",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Rudderstack Native Android Integration For Bugsnag",
   "dependencies": {
     "properties-reader": "^2.2.0",
