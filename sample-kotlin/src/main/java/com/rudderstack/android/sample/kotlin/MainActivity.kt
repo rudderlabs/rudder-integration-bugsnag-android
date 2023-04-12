@@ -1,37 +1,54 @@
 package com.rudderstack.android.sample.kotlin
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.rudderlabs.android.sample.kotlin.R
 import com.rudderstack.android.sdk.core.RudderProperty
 import com.rudderstack.android.sdk.core.RudderTraits
+import com.rudderstack.android.sample.kotlin.MainApplication.Companion.rudderClient
+import com.bugsnag.android.Bugsnag
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
 
-        MainApplication.rudderClient.screen(localClassName)
+    fun onButtonTap(view: View) {
+        when (view.id) {
+            R.id.btn ->
+                rudderClient.identify("test_userid_android")
+            R.id.btn2 ->
+                rudderClient.identify(
+                    "test_userid_android",
+                    RudderTraits()
+                        .putBirthday(Date(631172471000))
+                        .putAddress(RudderTraits.Address()
+                            .putCity("Palo Alto")
+                            .putCountry("USA"))
+                        .putFirstName("First Name")
+                        .putLastName("Last Name")
+                        .putName("Rudder-Bugsnag Android")
+                        .putGender("Male")
+                        .putPhone("0123456789")
+                        .putEmail("test@gmail.com")
+                        .put("key-1", "value-1")
+                        .put("key-2", 1234),
+                    null
+                )
 
-        val property = RudderProperty()
-        property.put("key_1", "val_1")
-        property.put("key_2", "val_2")
-        val childProperty = RudderProperty()
-        childProperty.put("key_c_1", "val_c_1")
-        childProperty.put("key_c_2", "val_c_2")
-        property.put("child_key", childProperty)
-        MainApplication.rudderClient.track("challenge: applied points", property)
-        MainApplication.rudderClient.track("article: viewed")
-        MainApplication.rudderClient.identify(
-            "test_user_id",
-            RudderTraits()
-                .putEmail("example@gmail.com")
-                .putFirstName("Foo")
-                .putLastName("Bar")
-                .putName("Ruchira"),
-            null
-        )
-        MainApplication.rudderClient.track("account: created")
-        MainApplication.rudderClient.track("account: authenticated")
+            R.id.btn3 ->
+                rudderClient.track("New Track event", RudderProperty()
+                    .putValue("key_1", "value_1")
+                    .putValue("key_2", "value_2"))
+            R.id.btn4 ->
+                rudderClient.screen("Home", RudderProperty()
+                    .putValue("key_1", "value_1")
+                    .putValue("key_2", "value_2"))
+            R.id.btn5 ->
+                Bugsnag.notify(RuntimeException("Test error"))
+        }
     }
 }
