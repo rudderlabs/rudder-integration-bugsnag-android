@@ -6,8 +6,13 @@ on:
       release_version:
         description: "Version(example: 1.0.0)"
         required: false
+permissions:
+  contents: read
+
 jobs:
   draft-new-release:
+    permissions:
+      contents: write  # for Git to git push
     name: Draft a new release
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/')
