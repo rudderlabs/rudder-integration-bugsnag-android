@@ -35,11 +35,12 @@ jobs:
 
       - name: Extract version from branch name (for release branches)
         id: extract-version
+        env:
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
         run: |
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-          VERSION=${BRANCH_NAME#hotfix-}
-          VERSION=${VERSION#release/}
-          
+          VERSION="${BRANCH_NAME#hotfix-}"
+          VERSION="${VERSION#release/}"
+
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Checkout
@@ -64,15 +65,17 @@ jobs:
         id: create_release
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          RELEASE_VERSION: ${{ steps.extract-version.outputs.release_version }}
+          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           # Create annotated tag
-          git tag -a v${{ steps.extract-version.outputs.release_version }} -m "chore: release v${{ steps.extract-version.outputs.release_version }}"
+          git tag -a "v${RELEASE_VERSION}" -m "chore: release v${RELEASE_VERSION}"
 
           # Push tag using App Token for verified status
-          git push origin refs/tags/v${{ steps.extract-version.outputs.release_version }}
+          git push origin "refs/tags/v${RELEASE_VERSION}"
 
           # Create GitHub release
-          DEBUG=conventional-github-releaser CONVENTIONAL_GITHUB_RELEASER_TOKEN=${{ steps.generate-token.outputs.token }} npx conventional-github-releaser -p angular
+          DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular
 
       - name: Delete release branch
         uses: koj-co/delete-merged-action@63a03c35810a8a7d4840d18793c0f68ff8b59450 # master
